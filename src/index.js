@@ -8,6 +8,15 @@ const glob = new Glob('**/package.json')
 const matches = []
 const errors = []
 
+const SPACE = ' '.repeat(40)
+
+const pad = str => {
+  if (str.length > SPACE.length - 1) return str
+  return str + SPACE.substr(str.length)
+}
+
+const sort = (str1, str2) => (str1.localeCompare(str2))
+
 glob.on('match', m => {
   try {
     const file = fs.readFileSync(path.resolve('.', m), 'utf8')
@@ -60,12 +69,12 @@ glob.on('end', () => {
   `)
 
   const groups = R.groupBy(R.prop('license'), matches)
-  R.forEachObjIndexed((value, key) => {
+  R.forEachObjIndexed((values, key) => {
     console.log(`
 ===============================================================================
 License: ${key}
 -------------------------------------------------------------------------------
-${JSON.stringify(value)}
+${R.join('\n', R.sort(sort, R.map(value => (pad(value.name + ' (' + value.version + ')') + ' [' + value.match + ']'), values)))}
     
     `)
   }, groups)
