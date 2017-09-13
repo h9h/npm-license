@@ -1,58 +1,72 @@
+const Glob = require('glob').Glob
 const fs = require('fs')
 const path = require('path')
+const R = require('ramda')
 
-const traverseDirectory = (dirname, filter, callback) => {
-  let directory = [];
+const glob = new Glob('**/package.json')
 
-  fs.readdir(dirname, function(err, list) {
-    dirname = fs.realpathSync(dirname);
-    if (err) {
-      return callback({ err, dirname })
+const matches = []
+const errors = []
+
+glob.on('match', m => {
+  try {
+    const file = fs.readFileSync(path.resolve('.', m), 'utf8')
+
+    if (file) {
+      const pkg = JSON.parse(file)
+
+      const item = {
+        match: m,
+        license: JSON.stringify(pkg.license) || 'n.a.',
+        name: pkg.name || 'n.a.',
+        version: pkg.version || 'n.a.'
+      }
+      matches.push(item)
+
+    } else {
+      const item = {
+        match: m,
+        error: 'readFileSync returned null'
+      }
+      errors.push(item)
+      console.log(item)
     }
 
-    // merke dir die Anzahl der Einträge
-    let numberOfFiles = list.length
-    
-    // behandle jeden Eintrag
-    list.forEach(file => {
-      file = path.resolve(dirname, file)
-
-      fs.stat(file, (err, stat) => {
-        if (err) {
-          callback({ err, file })
-          return
-        }
-        numberOfFiles -= 1
-        directory.push(file);
-
-        if (stat && stat.isDirectory()) {
-          // gehe rekursiv in das Unterverzeichnis
-          traverseDirectory(file, (err, parsed) => {
-          
-            // sammle die Dateien aus dem Unterverzeichnis(sen) ein
-            directory = directory.concat(parsed)
-            
-            // und wenn wir bei 0 sind, sind alle Callbacks durch (Dir-Fall)
-            if (numberOfFiles === 0) {
-              callback(null, directory);
-            }
-          })
-        } else {
-          // und wenn wir bei 0 sind, sind alle Callbacks durch (Datei-Fall)
-          if (numberOfFiles === 0) {
-            callback(null, directory);
-          }
-        }
-      })
-    })
-  })
-}
-
-traverseDirectory('.', function(err, result) {
-  if (err) {
-    console.log(JSON.stringify(err));
-    return
+  } catch (e) {
+    const item = {
+      match: m,
+      error: e
+    }
+    errors.push(item)
+    console.log(item)
   }
+})
 
-  console.log(result);
-});
+console.log(`Glob options: ${JSON.stringify(glob)}`)
+console.log(`
+
+===============================================================================
+                                   Results
+===============================================================================
+
+`)
+
+glob.on('end', () => {
+  console.log(`
+
+  Anzahl Matches: ${matches.length}
+  Anzahl Errors : ${errors.length}
+  
+  `)
+
+  const groups = R.groupBy(R.prop('license'), matches)
+  R.forEachObjIndexed((value, key) => {
+    console.log(`
+===============================================================================
+License: ${key}
+-------------------------------------------------------------------------------
+${JSON.stringify(value)}
+    
+    `)
+  }, groups)
+})

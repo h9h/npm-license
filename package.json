@@ -5,7 +5,6 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src —out-dir dist —source-maps —presets env",
     "start": "node src/index.js"
   },
   "repository": {
@@ -17,18 +16,13 @@
     "license"
   ],
   "author": "Michael Heinke",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/h9h/npm-license/issues"
   },
   "homepage": "https://github.com/h9h/npm-license#readme",
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.0"
-  },
-  "babel": {
-    "presets": [
-      "env"
-    ]
+  "dependencies": {
+    "glob": "^7.1.2",
+    "ramda": "^0.24.1"
   }
 }
