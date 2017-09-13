@@ -1,31 +1,34 @@
 {
-  „name“: „npm-license“,
-  „version“: „1.0.0“,
-  „description“: „Which npm module in your project uses which license?“,
-  „main“: „src/index.js“,
-  „scripts“: {
-    „test“: „echo \“Error: no test specified\“ && exit 1“,
-    „build“: „babel src —out-dir dist —source-maps —presets env“
+  "name": "npm-license",
+  "version": "1.0.0",
+  "description": "Which npm module in your project uses which license?",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src —out-dir dist —source-maps —presets env",
+    "start": "node src/index.js"
   },
-  „repository“: {
-    „type“: „git“,
-    „url“: „git+https://github.com/h9h/npm-license.git“
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/h9h/npm-license.git"
   },
-  „keywords“: [
-    „npm“,
-    „license“
+  "keywords": [
+    "npm",
+    "license"
   ],
-  „author“: „Michael Heinke“,
-  „license“: „ISC“,
-  „bugs“: {
-    „url“: „https://github.com/h9h/npm-license/issues“
+  "author": "Michael Heinke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/h9h/npm-license/issues"
   },
-  „homepage“: „https://github.com/h9h/npm-license#readme“,
-  „devDependencies“: {
-    „babel-cli“: „^6.26.0“,
-    „babel-preset-env“: „^1.6.0“
+  "homepage": "https://github.com/h9h/npm-license#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0"
   },
-  „babel“: {
-    „presets“: [„env“]
+  "babel": {
+    "presets": [
+      "env"
+    ]
   }
 }

@@ -1,23 +1,28 @@
-const fs = require(‚fs‘);
-const path = require(‚path‘)
+const fs = require('fs')
+const path = require('path')
 
-const traverseDirectory = (dirname, callback) => {
+const traverseDirectory = (dirname, filter, callback) => {
   let directory = [];
 
   fs.readdir(dirname, function(err, list) {
     dirname = fs.realpathSync(dirname);
     if (err) {
-      return callback(err)
+      return callback({ err, dirname })
     }
 
     // merke dir die Anzahl der Einträge
-    let listlength = list.length
+    let numberOfFiles = list.length
     
     // behandle jeden Eintrag
     list.forEach(file => {
       file = path.resolve(dirname, file)
 
       fs.stat(file, (err, stat) => {
+        if (err) {
+          callback({ err, file })
+          return
+        }
+        numberOfFiles -= 1
         directory.push(file);
 
         if (stat && stat.isDirectory()) {
@@ -28,13 +33,13 @@ const traverseDirectory = (dirname, callback) => {
             directory = directory.concat(parsed)
             
             // und wenn wir bei 0 sind, sind alle Callbacks durch (Dir-Fall)
-            if (!—listlength) {
+            if (numberOfFiles === 0) {
               callback(null, directory);
             }
           })
         } else {
           // und wenn wir bei 0 sind, sind alle Callbacks durch (Datei-Fall)
-          if (!—listlength) {
+          if (numberOfFiles === 0) {
             callback(null, directory);
           }
         }
@@ -43,9 +48,9 @@ const traverseDirectory = (dirname, callback) => {
   })
 }
 
-traverseDirectory(__dirname, function(err, result) {
+traverseDirectory('.', function(err, result) {
   if (err) {
-    console.log(err);
+    console.log(JSON.stringify(err));
     return
   }
 
