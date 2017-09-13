@@ -3,7 +3,9 @@ const fs = require('fs')
 const path = require('path')
 const R = require('ramda')
 
-const glob = new Glob('**/package.json')
+const wd = path.normalize(process.argv[2] || '.')
+
+const glob = new Glob('**/package.json', { cwd: wd })
 
 const matches = []
 const errors = []
@@ -17,9 +19,15 @@ const pad = str => {
 
 const sort = (str1, str2) => (str1.localeCompare(str2))
 
+console.log(`
+
+  Working directory: ${wd}
+  
+`)
+
 glob.on('match', m => {
   try {
-    const file = fs.readFileSync(path.resolve('.', m), 'utf8')
+    const file = fs.readFileSync(path.resolve(wd, m), 'utf8')
 
     if (file) {
       const pkg = JSON.parse(file)
