@@ -10,21 +10,30 @@ const traverseDirectory = (dirname, callback) => {
       return callback(err)
     }
 
-    let listlength = list.length;
-    list.forEach(function(file) {
+    // merke dir die Anzahl der Einträge
+    let listlength = list.length
+    
+    // behandle jeden Eintrag
+    list.forEach(file => {
       file = path.resolve(dirname, file)
 
-      fs.stat(file, function(err, stat) {
+      fs.stat(file, (err, stat) => {
         directory.push(file);
 
         if (stat && stat.isDirectory()) {
-          traverseDirectory(file, function(err, parsed) {
-            directory = directory.concat(parsed);
+          // gehe rekursiv in das Unterverzeichnis
+          traverseDirectory(file, (err, parsed) => {
+          
+            // sammle die Dateien aus dem Unterverzeichnis(sen) ein
+            directory = directory.concat(parsed)
+            
+            // und wenn wir bei 0 sind, sind alle Callbacks durch (Dir-Fall)
             if (!—listlength) {
               callback(null, directory);
             }
           })
         } else {
+          // und wenn wir bei 0 sind, sind alle Callbacks durch (Datei-Fall)
           if (!—listlength) {
             callback(null, directory);
           }
