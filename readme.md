@@ -1,5 +1,11 @@
 # npm-license
 
+Dieses Modul liest unterhalb eines gegebenen Verzeichnisses alle package.json Dateien, um aus den dort enthaltenen Informationen zur Lizenz eine Übersicht über die verwendeten Module und deren Lizenzen zu erstellen.
+
+Die Ausgabe erfolgt als Liste der Module, gruppiert nach ihrer jeweiligen Lizenz.
+
+Da rekursiv durch alle Unterverzeichnisse gesucht wird, werden für die Module auch alle transitiven Abhängigkeiten berücksichtigt.
+
 ## Installation:
 
 ```
