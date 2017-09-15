@@ -16,7 +16,12 @@ npm install
 ## Verwendung
 
 ```
-npm start -- ABSOLUTES_VERZEICHNIS
+npm start --dir VERZEICHNIS
+```
+
+oder unter linux/osx auch einfach:
+```
+lic --dir VERZEICHNIS
 ```
 
 Das Ergebnis ist dann auf der Konsole eine Ausgabe der Form:
@@ -45,3 +50,31 @@ wenn sie Dependencies mehrerer anderer Module sind.
 Daher wird auch der jeweilige Pfad zur Herkunft angegeben.
 Hier sieht man z.B. an ```[node_modules/fsevents/node_modules/tweetnacl/package.json]```, dass fsevents
 selber eine Abhängigkeit zu ```tweetnacl``` in der Version 0.14.5 hat.
+
+Alternativ kann mit der Option '--csv' eine Liste im CSV-Format ausgegeben werden:
+
+```
+npm start --dir VERZEICHNIS --csv
+```
+
+mit einem Ergebnis der folgenden Form:
+
+```
+node_modules/read-pkg-up/package.json;MIT;read-pkg-up;2.0.0
+node_modules/require-directory/package.json;MIT;require-directory;2.1.1
+node_modules/require-main-filename/package.json;ISC;require-main-filename;1.0.1
+node_modules/semver/package.json;ISC;semver;5.4.1
+node_modules/set-blocking/package.json;ISC;set-blocking;2.0.0
+node_modules/shebang-command/package.json;MIT;shebang-command;1.2.0
+node_modules/shebang-regex/package.json;MIT;shebang-regex;1.0.0
+node_modules/signal-exit/package.json;ISC;signal-exit;3.0.2
+node_modules/spdx-correct/package.json;Apache-2.0;spdx-correct;1.0.2
+```
+
+Spalten: 
+
+Fundstelle;Lizenz;Modul;Version
+
+bzw. bei Fehlern:
+
+Fundstelle;error;Fehlermeldung

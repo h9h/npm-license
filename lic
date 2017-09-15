@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+const yargs = require('yargs')
+const fs = require('fs')
+const licenses = require('./src/licenses')
+
+const argv = yargs
+  .usage(`
+================
+Get all licenses
+----------------`)
+  .option('dir', {
+    description: 'Input directory to pars',
+    alias: 'd',
+  })
+  .option('csv', {
+    description: 'Output result in csv format',
+    alias: 'c',
+    boolean: true
+  })
+  .default('dir', '.')
+  .normalize('dir')
+  .default('csv', false)
+  .exitProcess(false)
+  .help()
+  .argv;
+
+if (!fs.existsSync(argv.dir)) {
+  console.log(`
+  
+  Directory '${argv.dir}' doesn't exist
+  
+  `)
+  process.exit(1)
+}
+
+const stat = fs.statSync(argv.dir)
+if (!stat.isDirectory()) {
+  console.log(`
+  
+  File '${argv.dir}' is not a directory
+  
+  `)
+  process.exit(1)
+}
+
+if (argv.csv) {
+  licenses.list(argv.dir)
+} else {
+  licenses.prettyPrint(argv.dir)
+}

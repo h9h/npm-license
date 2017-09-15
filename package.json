@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js"
+    "start": "node ./lic"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/h9h/npm-license#readme",
   "dependencies": {
     "glob": "^7.1.2",
-    "ramda": "^0.24.1"
+    "ramda": "^0.24.1",
+    "yargs": "^8.0.2"
   }
 }
